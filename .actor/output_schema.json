@@ -1,0 +1,13 @@
+{
+    "actorOutputSchemaVersion": 1,
+    "title": "Broken Link Checker output",
+    "description": "One dataset item per URL checked.",
+    "properties": {
+        "results": {
+            "type": "string",
+            "title": "Checked URLs",
+            "description": "One row per URL: its status classification, HTTP status code, the full redirect chain hop by hop with loop and downgrade flags, whether it is a soft 404, certificate expiry when asked for, and which page the link was found on with its anchor text.",
+            "template": "{{links.apiDefaultDatasetUrl}}/items"
+        }
+    }
+}

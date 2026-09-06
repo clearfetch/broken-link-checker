@@ -1,0 +1,6 @@
+{
+    "crawlPages": ["https://apify.com/"],
+    "urls": ["https://httpbin.org/status/404", "https://httpbin.org/status/500", "https://httpbin.org/redirect/3", "https://this-domain-does-not-exist-12345.com/"],
+    "checkCertificates": true,
+    "maxConcurrency": 10
+}

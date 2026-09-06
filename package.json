@@ -1,0 +1,14 @@
+{
+    "name": "broken-link-checker",
+    "version": "1.0.0",
+    "type": "module",
+    "description": "Check URLs in bulk: status codes, full redirect chains, redirect loops, soft 404s and certificate expiry.",
+    "engines": { "node": ">=20.0.0" },
+    "dependencies": {
+        "apify": "^3.7.0",
+        "cheerio": "^1.0.0",
+        "got-scraping": "^4.0.0"
+    },
+    "scripts": { "start": "node ./src/main.js", "test": "node ./test/check.test.mjs" },
+    "license": "MIT"
+}

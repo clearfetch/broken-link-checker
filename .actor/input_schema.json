@@ -1,0 +1,80 @@
+{
+    "title": "Broken Link Checker input",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "urls": {
+            "title": "URLs to check",
+            "type": "array",
+            "editor": "stringList",
+            "description": "The links to check, one per line. Also accepts \"url\" and \"startUrls\".",
+            "prefill": []
+        },
+        "crawlPages": {
+            "title": "Or: pages whose links to check",
+            "type": "array",
+            "editor": "stringList",
+            "description": "Pages to read first; every link on them is then checked. This is how a broken-link audit usually starts. You can use this together with the list above.",
+            "prefill": [
+                "https://apify.com/"
+            ]
+        },
+        "includeExternal": {
+            "title": "Include links to other sites",
+            "type": "boolean",
+            "default": true,
+            "description": "When crawling a page, also check links pointing off the site. Off-site links are the ones that rot first."
+        },
+        "detectSoftErrors": {
+            "title": "Detect soft 404s",
+            "type": "boolean",
+            "default": true,
+            "description": "Flag pages that answer 200 while actually being error pages. These pass every ordinary status check, which is what makes them harmful."
+        },
+        "checkCertificates": {
+            "title": "Check TLS certificates",
+            "type": "boolean",
+            "default": false,
+            "description": "Also report the certificate issuer and how many days until it expires. A certificate a browser would reject (expired, self-signed, wrong host) marks the link \"insecure\" and broken, because the visitor never gets past the warning page. Adds a TLS handshake per host."
+        },
+        "onlyProblems": {
+            "title": "Report problems only",
+            "type": "boolean",
+            "default": false,
+            "description": "Write only the URLs with something wrong, plus one summary row saying how many were checked. Every URL checked is charged either way, since confirming a link is healthy is the same work as finding it broken."
+        },
+        "maxRedirects": {
+            "title": "Maximum redirects to follow",
+            "type": "integer",
+            "default": 10,
+            "minimum": 0,
+            "maximum": 20,
+            "description": "How many hops to follow before giving up. Every hop is reported, so a chain longer than this is reported as far as it got."
+        },
+        "maxConcurrency": {
+            "title": "Concurrency",
+            "type": "integer",
+            "default": 10,
+            "minimum": 1,
+            "maximum": 50,
+            "description": "URLs checked in parallel."
+        },
+        "timeoutSecs": {
+            "title": "Request timeout (seconds)",
+            "type": "integer",
+            "default": 20,
+            "minimum": 5,
+            "maximum": 120,
+            "description": "Per-request timeout. A single URL gets at most twice this in total, however many redirects it has."
+        },
+        "proxyConfiguration": {
+            "title": "Proxy",
+            "type": "object",
+            "editor": "proxy",
+            "default": {
+                "useApifyProxy": false
+            },
+            "description": "Optional. Not needed for most sites."
+        }
+    }
+}

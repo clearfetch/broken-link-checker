@@ -1,0 +1,157 @@
+{
+    "actorSpecification": 1,
+    "fields": {
+        "type": "object",
+        "properties": {
+            "url": {
+                "type": "string",
+                "title": "URL"
+            },
+            "finalUrl": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "title": "Final URL",
+                "description": "Present only when the URL redirected."
+            },
+            "ok": {
+                "type": "boolean",
+                "description": "True when the link works: a 2xx answer, directly or after redirects. False for anything else, including a 403 where we cannot tell."
+            },
+            "status": {
+                "type": "string",
+                "title": "Status",
+                "description": "ok, redirected, blocked, broken, server-error, soft-error, insecure or unreachable. Filter on this. \"blocked\" is a 401/403/429, which usually means bot protection turned the checker away rather than the link being dead."
+            },
+            "statusCode": {
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "title": "Code"
+            },
+            "broken": {
+                "type": "boolean",
+                "title": "Broken",
+                "description": "True for anything a visitor would experience as a dead link: 4xx, 5xx, unreachable hosts, soft 404s and rejected certificates. Deliberately false for \"blocked\", so bot protection does not fill the report with false alarms."
+            },
+            "redirects": {
+                "type": [
+                    "array",
+                    "null"
+                ],
+                "title": "Redirect chain",
+                "description": "Each hop with the URL, its status code and where it pointed.",
+                "items": {
+                    "type": "object"
+                }
+            },
+            "redirectChain": {
+                "type": [
+                    "object",
+                    "null"
+                ],
+                "title": "Chain summary",
+                "description": "How many hops, whether it loops, whether https downgrades to http anywhere, and whether it ends on a different host."
+            },
+            "softError": {
+                "type": [
+                    "object",
+                    "null"
+                ],
+                "title": "Soft 404",
+                "description": "Present when the page answered 200 but reads as an error page, with the reason it was judged so."
+            },
+            "certificate": {
+                "type": [
+                    "object",
+                    "null"
+                ],
+                "title": "Certificate",
+                "description": "Issuer, subject, validity dates, days until expiry, and whether a browser would accept it, when certificate checking is on."
+            },
+            "contentType": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "foundOn": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "title": "Found on",
+                "description": "The page this link was taken from, in crawl mode."
+            },
+            "anchor": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "title": "Anchor text",
+                "description": "The clickable text, so a report can name the link a person has to fix."
+            },
+            "external": {
+                "type": [
+                    "boolean",
+                    "null"
+                ],
+                "description": "Whether the link pointed off the crawled site."
+            },
+            "elapsedMs": {
+                "type": "integer"
+            },
+            "checkedAt": {
+                "type": "string",
+                "description": "ISO timestamp."
+            },
+            "error": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        }
+    },
+    "views": {
+        "overview": {
+            "title": "Checked URLs",
+            "transformation": {
+                "fields": [
+                    "status",
+                    "statusCode",
+                    "url",
+                    "finalUrl",
+                    "anchor",
+                    "foundOn"
+                ]
+            },
+            "display": {
+                "component": "table",
+                "properties": {
+                    "status": {
+                        "label": "Status"
+                    },
+                    "statusCode": {
+                        "label": "Code"
+                    },
+                    "url": {
+                        "label": "URL",
+                        "format": "link"
+                    },
+                    "finalUrl": {
+                        "label": "Redirects to"
+                    },
+                    "anchor": {
+                        "label": "Anchor text"
+                    },
+                    "foundOn": {
+                        "label": "Found on"
+                    }
+                }
+            }
+        }
+    }
+}

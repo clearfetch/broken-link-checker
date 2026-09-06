@@ -1,0 +1,7 @@
+node_modules
+storage
+.git
+test
+test-inputs
+scripts
+NOTES.md

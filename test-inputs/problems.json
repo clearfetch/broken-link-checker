@@ -1,0 +1,15 @@
+{
+  "urls": [
+    "https://apify.com/this-page-really-does-not-exist-404",
+    "https://nonexistent-domain-xyzzy-987654.com/",
+    "http://google.com",
+    "https://expired.badssl.com/",
+    "https://self-signed.badssl.com/",
+    "https://httpstat.us/500",
+    "not a url at all",
+    "ftp://files.example.com/thing.zip"
+  ],
+  "checkCertificates": true,
+  "timeoutSecs": 15,
+  "maxConcurrency": 8
+}

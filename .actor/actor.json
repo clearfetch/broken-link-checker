@@ -1,0 +1,17 @@
+{
+    "actorSpecification": 1,
+    "name": "broken-link-checker",
+    "title": "Broken Link Checker - Bulk URL Status & Redirect Chains",
+    "description": "Check URLs in bulk or crawl a page's links: status codes, the full redirect chain hop by hop, redirect loops, https downgrades, soft 404s that answer 200 while being error pages, and certificate expiry. No proxy, no login.",
+    "version": "1.0",
+    "buildTag": "latest",
+    "minMemoryMbytes": 256,
+    "maxMemoryMbytes": 1024,
+    "input": "./input_schema.json",
+    "output": "./output_schema.json",
+    "dockerfile": "../Dockerfile",
+    "readme": "../README.md",
+    "storages": {
+        "dataset": "./dataset_schema.json"
+    }
+}
