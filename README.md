@@ -18,9 +18,10 @@ Most link checkers hand you a list of status codes and leave the judgement to yo
 - **Certificates a browser rejects.** HTTP clients do not verify certificates the way browsers do, so an expired
   certificate returns a cheerful `200` to a scraper while every real visitor hits a full-page warning. Turn on
   certificate checking and those come back as `insecure`, with the issuer, the dates and the reason.
-- **A HEAD request is an optimisation, not a verdict.** Plenty of hosts accept a `HEAD` and never answer it while
-  serving `GET` perfectly. HEAD gets a short leash here and anything less than a clean answer falls through to a
-  real GET, which is why this does not invent unreachable hosts.
+- **A HEAD request is an optimisation, not a verdict.** A server that does not implement `HEAD` can answer it
+  with any error while serving `GET` perfectly, so anything less than a clean answer is confirmed with a real GET,
+  which is why this does not invent dead links. Links to files (PDFs, videos, archives) are judged from their
+  headers and never downloaded.
 - **Every hop, not just the destination.** Redirect chains are reported hop by hop with flags for loops,
   `https -> http` downgrades, and chains that end up on a different host, which is how expired links turn into
   parked-domain spam.
@@ -34,6 +35,10 @@ the evidence for it, certificate issuer and days to expiry, `contentType`, and `
 
 In crawl mode each link also carries **`foundOn`** (the page it was on) and **`anchor`** (the clickable text), so
 a report can name the link a person actually has to go and fix.
+
+With **Report problems only** on, healthy links are left out and the run ends with one summary row
+(`role: "summary"`, `checkedCount`, `brokenCount`, `flaggedCount` and a `note`), so the dataset still shows how
+many links were checked.
 
 ## How to use
 
@@ -184,6 +189,10 @@ A host that does not resolve:
 - Every URL checked is charged once, healthy or broken, including when `onlyProblems` hides the healthy rows:
   confirming a link works is the same request as finding it dead. URLs that are skipped as invalid are free.
 
+Paid Apify plans pay less: 10% off on Bronze, 20% on Silver and 30% on Gold and higher tiers.
+
+Apify also charges a run-start fee of $0.00005 per started GB of allocated memory (minimum one event), including runs that produce no chargeable results.
+
 ## Use cases
 
 - **SEO audits**: 404s, redirect chains that waste crawl budget, `https` downgrades, soft 404s.
@@ -233,8 +242,8 @@ output tells you which evidence triggered it.
 
 **What about a redirect loop?** Reported, with `loop: true` on the chain summary, and the hops that formed it.
 
-**How fast is it?** 94 links off a real homepage in 14 seconds at the default concurrency of 10, certificate
-checks included.
+**How fast is it?** The 89 links on apify.com's homepage take 6 seconds on Apify at the default concurrency of
+10, and 7 seconds at the smallest memory setting, 256 MB.
 
 **Does it check images and scripts too?** No, `<a href>` links only. Asset checking is a different job.
 
@@ -243,7 +252,18 @@ checks included.
 **Do you have the URL list already?** If you need one, `clearfetch/website-sitemap-extractor` pulls every URL a
 site publishes, and its output feeds straight into this.
 
+## More tools from clearfetch
+
+- [Tech Stack Detector](https://apify.com/clearfetch/tech-stack-detector): the CMS, frameworks, analytics and hosting behind any website
+- [Website Contact Extractor](https://apify.com/clearfetch/website-contact-extractor): emails, phone numbers and social profiles from company websites
+- [Document Text Extractor](https://apify.com/clearfetch/document-text-extractor): PDF, DOCX and HTML to clean text and markdown
+- [Website Sitemap Extractor](https://apify.com/clearfetch/website-sitemap-extractor): every URL of a website from its sitemaps, from just the domain
+- [ATS Jobs Scraper](https://apify.com/clearfetch/ats-jobs-scraper): every open job from company careers pages on Greenhouse, Lever, Ashby, Workday and more
+
 ## Changelog
 
+- **1.0.5** (2026-10-01) — **Report problems only** no longer fails at the end of the run; runs at 256 MB no
+  longer run out of memory; links to files are judged from their headers instead of being downloaded; hosts whose
+  HEAD answers used to stall for 8 seconds are checked in milliseconds.
 - **1.0.0** (2026-09) — first release: bulk checking and page crawling, hop-by-hop redirect chains with loop,
   downgrade and off-host flags, soft-404 detection, `blocked` as a class of its own, and certificate validity.
